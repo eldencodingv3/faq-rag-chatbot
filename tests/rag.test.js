@@ -52,9 +52,13 @@ describe('Config module', () => {
     process.env = originalEnv;
   });
 
-  test('throws if OPENAI_API_KEY is not set', () => {
+  test('warns if OPENAI_API_KEY is not set but does not throw', () => {
     delete process.env.OPENAI_API_KEY;
-    expect(() => require('../src/config')).toThrow('OPENAI_API_KEY');
+    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+    const config = require('../src/config');
+    expect(config.OPENAI_API_KEY).toBe('');
+    expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('OPENAI_API_KEY'));
+    consoleSpy.mockRestore();
   });
 
   test('exports OPENAI_API_KEY and PORT with defaults', () => {
