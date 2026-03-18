@@ -1,0 +1,5 @@
+node_modules/
+data/lancedb/
+.env
+dist/
+*.log
